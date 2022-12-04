@@ -88,7 +88,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a056bad8dc7d42aab962962a3692ec65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 200
+  _speed: 250
 --- !u!96 &1309910247774855674
 TrailRenderer:
   serializedVersion: 3
@@ -102,7 +102,7 @@ TrailRenderer:
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
   m_StaticShadowCaster: 0
-  m_MotionVectors: 2
+  m_MotionVectors: 1
   m_LightProbeUsage: 0
   m_ReflectionProbeUsage: 0
   m_RayTracingMode: 0
@@ -131,7 +131,7 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 5
+  m_Time: 1
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 0.080885716
@@ -150,11 +150,11 @@ TrailRenderer:
       - serializedVersion: 3
         time: 1
         value: 0
-        inSlope: 0.009846572
-        outSlope: 0.009846572
+        inSlope: -0.053611424
+        outSlope: -0.053611424
         tangentMode: 0
         weightedMode: 0
-        inWeight: 0.21378714
+        inWeight: 0.15706813
         outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
@@ -193,10 +193,10 @@ TrailRenderer:
     alignment: 0
     textureMode: 0
     textureScale: {x: 1, y: 1}
-    shadowBias: 0.5
+    shadowBias: 0
     generateLightingData: 0
   m_MinVertexDistance: 0
-  m_MaskInteraction: 0
-  m_Autodestruct: 0
+  m_MaskInteraction: 2
+  m_Autodestruct: 1
   m_Emitting: 1
-  m_ApplyActiveColorSpace: 1
+  m_ApplyActiveColorSpace: 0

@@ -5,16 +5,13 @@ using UnityEngine.InputSystem;
 [RequireComponent(typeof(PlayerMovementController))]
 [RequireComponent(typeof(PlayerCameraController))]
 [RequireComponent(typeof(PlayerAnimationController))]
-[RequireComponent(typeof(HealthHandler))]
+[RequireComponent(typeof(PlayerWeaponController))]
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField]
-    private Weapon _weapon;
-    
     private PlayerAnimationController _animationController;
     private PlayerMovementController _movementController;
     private PlayerCameraController _cameraController;
-    private HealthHandler _healthHandler;
+    private PlayerWeaponController _weaponController;
     private PlayerInput _input;
     private Camera _camera;
 
@@ -25,26 +22,27 @@ public class PlayerController : MonoBehaviour
         _animationController = GetComponent<PlayerAnimationController>();
         _movementController = GetComponent<PlayerMovementController>();
         _cameraController = GetComponent<PlayerCameraController>();
-        _healthHandler = GetComponent<HealthHandler>();
+        _weaponController = GetComponent<PlayerWeaponController>();
         _input = new PlayerInput();
     }
 
     private void Start()
     {
+        _input.Player.Enable();
         _input.Player.Aim.performed += OnAimPerformed;
         _input.Player.Aim.canceled += OnAimCanceled;
-        _input.Player.Shoot.performed += OnShootPerformed; 
-        _movementController.Stayed += OnStayed;
+        _movementController.Stay += OnStay;
         _movementController.Moved += OnMoved;
-        _input.Player.Enable();
+        _movementController.Run += OnRun;
+
     }
+
     
     private void OnDestroy()
     {
         _input.Player.Aim.performed -= OnAimPerformed;
         _input.Player.Aim.canceled -= OnAimCanceled;
-        _input.Player.Shoot.performed -= OnShootPerformed; 
-        _movementController.Stayed -= OnStayed;
+        _movementController.Stay -= OnStay;
         _movementController.Moved -= OnMoved;
         _input.Player.Disable();
     }
@@ -53,6 +51,7 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        _weaponController.Initialize(_cameraController.GetRaycastHit(_camera));
         var moveInput = _input.Player.Move.ReadValue<Vector2>();
         _movementController.Move(moveInput, _camera);
         
@@ -60,7 +59,6 @@ public class PlayerController : MonoBehaviour
         {
             _cameraController.PlayerAimRotation(_camera);
             _movementController.SetRotateOnMove(false);
-            
         }
         else
         {
@@ -86,12 +84,7 @@ public class PlayerController : MonoBehaviour
         _animationController.SetAimMode(false);
     }
     
-    private void OnShootPerformed(InputAction.CallbackContext context)
-    {
-        var targetHit = _cameraController.GetRaycastHit(_camera);
-        _weapon.Shoot(targetHit);
-        
-    }
+  
     
     private void OnMoved()
     {
@@ -99,12 +92,17 @@ public class PlayerController : MonoBehaviour
         _movementController.SetSpeed(_movementController.WalkSpeed);
     }
 
-    private void OnStayed()
+    private void OnStay()
     {
-        _animationController.SetSpeedState(0);
+        _animationController.SetSpeedState(_movementController.StaySpeed);
     }
     
-    
+    private void OnRun()
+    {
+       _animationController.SetSpeedState(_movementController.RunSpeed);
+       _movementController.SetSpeed(_movementController.RunSpeed);
+    }
+
 
     
     

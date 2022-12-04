@@ -3,6 +3,9 @@ using UnityEngine;
 
 public class Weapon : MonoBehaviour
 {
+    [field:SerializeField]
+    public float DelayBeforeNextShot { get; private set; }
+    
     [SerializeField]
     private Bullet _bullet;
 
@@ -11,23 +14,23 @@ public class Weapon : MonoBehaviour
 
     [SerializeField]
     private float _damage;
-
+    
     private EffectController _effectController;
-
+    
     private void Awake()
     {
         _effectController = GetComponent<EffectController>();
     }
+    
 
     public void Shoot(RaycastHit targetHit)
     {
         var aimDirection = (targetHit.point - _muzzle.position).normalized;
         var bullet = Instantiate(_bullet, _muzzle.position, Quaternion.LookRotation(aimDirection, Vector3.up));
-        
+         bullet.Initialize(targetHit.point);
+         
         _effectController.PlayMuzzleEffect(_muzzle.position, _muzzle.forward);
-        bullet.Initialize(targetHit.point);
         
-
         var otherEffectController = targetHit.transform.GetComponent<EffectController>();
         if (otherEffectController != null)
         {
@@ -39,6 +42,7 @@ public class Weapon : MonoBehaviour
         {
             otherHealthHandler.TakeDamage(_damage);
         }
-
     }
+
+   
 }
