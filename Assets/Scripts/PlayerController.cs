@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerMovementController))]
@@ -31,6 +30,7 @@ public class PlayerController : MonoBehaviour
         _input.Player.Enable();
         _input.Player.Aim.performed += OnAimPerformed;
         _input.Player.Aim.canceled += OnAimCanceled;
+        _input.Player.Shoot.performed += _weaponController.OnShoot;
         _movementController.Stay += OnStay;
         _movementController.Moved += OnMoved;
         _movementController.Run += OnRun;
@@ -42,22 +42,26 @@ public class PlayerController : MonoBehaviour
     {
         _input.Player.Aim.performed -= OnAimPerformed;
         _input.Player.Aim.canceled -= OnAimCanceled;
+        _input.Player.Shoot.performed -= _weaponController.OnShoot;
+        _input.Player.Disable();
+        
         _movementController.Stay -= OnStay;
         _movementController.Moved -= OnMoved;
-        _input.Player.Disable();
+        _movementController.Run -= OnRun;
     }
 
 
 
     private void Update()
     {
-        _weaponController.Initialize(_cameraController.GetRaycastHit(_camera));
+        _weaponController.Initialize(_cameraController.GetRaycastTarget(_camera));
+        
         var moveInput = _input.Player.Move.ReadValue<Vector2>();
-        _movementController.Move(moveInput, _camera);
+        _movementController.Move(moveInput, _input.Player.Sprint.IsPressed(), _camera);
         
         if (_cameraController.IsAimMode)
         {
-            _cameraController.PlayerAimRotation(_camera);
+            _cameraController.RotateInAimMode(_camera);
             _movementController.SetRotateOnMove(false);
         }
         else
@@ -69,7 +73,7 @@ public class PlayerController : MonoBehaviour
     private void LateUpdate()
     {
         var lookInput = _input.Player.Look.ReadValue<Vector2>();
-        _cameraController.CameraRotation(lookInput);
+        _cameraController.UpdateCameraRotation(lookInput);
     }
     
     private void OnAimPerformed(InputAction.CallbackContext context)

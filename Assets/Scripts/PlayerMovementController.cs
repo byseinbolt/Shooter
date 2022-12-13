@@ -7,12 +7,12 @@ public class PlayerMovementController : MonoBehaviour
     public event Action Moved;
     public event Action Stay;
     public event Action Run;
-   
-
-    public float StaySpeed => 0f;
-    [field: SerializeField] public float WalkSpeed { get;private set;}
-    [field: SerializeField] public float RunSpeed { get; private set;}
     
+    public float StaySpeed => 0f;
+    [field: SerializeField]
+    public float WalkSpeed { get;private set;}
+    [field: SerializeField]
+    public float RunSpeed { get; private set;}
     
     [SerializeField]
     private float _rotationSmoothTime = 0.12f;
@@ -29,18 +29,19 @@ public class PlayerMovementController : MonoBehaviour
         _characterController = GetComponent<CharacterController>();
     }
     
-    public void Move(Vector2 moveInput, Camera mainCamera)
+    public void Move(Vector2 moveInput, bool isRunning, Camera mainCamera)
     {
         var inputDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
-        
-        if (moveInput != Vector2.zero && Input.GetKey(KeyCode.LeftShift))
+
+        var shouldMove = moveInput != Vector2.zero;
+        if (shouldMove && isRunning)
         {
             MoveCharacter(inputDirection, mainCamera);
             Run?.Invoke();
         }
-        else if (moveInput != Vector2.zero)
+        else if (shouldMove)
         {
-           MoveCharacter(inputDirection,mainCamera);
+           MoveCharacter(inputDirection, mainCamera);
            Moved?.Invoke();
         }
         else

@@ -31,13 +31,13 @@ public class Weapon : MonoBehaviour
          
         _effectController.PlayMuzzleEffect(_muzzle.position, _muzzle.forward);
         
-        var otherEffectController = targetHit.transform.GetComponent<EffectController>();
+        var otherEffectController = targetHit.transform.GetComponentInParent<EffectController>();
         if (otherEffectController != null)
         {
             otherEffectController.PlayHitEffect(targetHit.point, targetHit.normal);
         }
 
-        var otherHealthHandler = targetHit.transform.GetComponent<HealthHandler>();
+        var otherHealthHandler = targetHit.transform.GetComponentInParent<HealthHandler>();
         if (otherHealthHandler != null)
         {
             otherHealthHandler.TakeDamage(_damage);
