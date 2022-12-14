@@ -2,9 +2,22 @@
 
 public class GameManager : MonoBehaviour
 {
-    private void Start()
+    [SerializeField]
+    private EnemyManager _enemyManager;
+
+    [SerializeField]
+    private PlayerController _player;
+
+
+    [SerializeField] private bool _shouldLockCursor;
+    private void Awake()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        _enemyManager.Initialize(_player.transform);
+        if (_shouldLockCursor)
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+       
     }
 }

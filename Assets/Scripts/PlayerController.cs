@@ -3,14 +3,16 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(PlayerMovementController))]
 [RequireComponent(typeof(PlayerCameraController))]
-[RequireComponent(typeof(PlayerAnimationController))]
+[RequireComponent(typeof(UnitAnimationController))]
 [RequireComponent(typeof(PlayerWeaponController))]
+[RequireComponent(typeof(HealthHandler))]
 public class PlayerController : MonoBehaviour
 {
-    private PlayerAnimationController _animationController;
+    private UnitAnimationController _animationController;
     private PlayerMovementController _movementController;
     private PlayerCameraController _cameraController;
     private PlayerWeaponController _weaponController;
+    private HealthHandler _healthHandler;
     private PlayerInput _input;
     private Camera _camera;
 
@@ -18,10 +20,11 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         _camera = Camera.main;
-        _animationController = GetComponent<PlayerAnimationController>();
+        _animationController = GetComponent<UnitAnimationController>();
         _movementController = GetComponent<PlayerMovementController>();
         _cameraController = GetComponent<PlayerCameraController>();
         _weaponController = GetComponent<PlayerWeaponController>();
+        _healthHandler = GetComponent<HealthHandler>();
         _input = new PlayerInput();
     }
 
@@ -31,9 +34,11 @@ public class PlayerController : MonoBehaviour
         _input.Player.Aim.performed += OnAimPerformed;
         _input.Player.Aim.canceled += OnAimCanceled;
         _input.Player.Shoot.performed += _weaponController.OnShoot;
+        
         _movementController.Stay += OnStay;
         _movementController.Moved += OnMoved;
         _movementController.Run += OnRun;
+        _healthHandler.Died += OnDied;
 
     }
 
@@ -48,6 +53,7 @@ public class PlayerController : MonoBehaviour
         _movementController.Stay -= OnStay;
         _movementController.Moved -= OnMoved;
         _movementController.Run -= OnRun;
+        _healthHandler.Died -= OnDied;
     }
 
 
@@ -88,25 +94,25 @@ public class PlayerController : MonoBehaviour
         _animationController.SetAimMode(false);
     }
     
-  
-    
     private void OnMoved()
     {
-        _animationController.SetSpeedState(_movementController.WalkSpeed);
-        _movementController.SetSpeed(_movementController.WalkSpeed);
+        _animationController.SetSpeedState(_movementController.Speed);
     }
 
     private void OnStay()
     {
-        _animationController.SetSpeedState(_movementController.StaySpeed);
+        _animationController.SetSpeedState(_movementController.Speed);
     }
     
     private void OnRun()
     {
-       _animationController.SetSpeedState(_movementController.RunSpeed);
-       _movementController.SetSpeed(_movementController.RunSpeed);
+       _animationController.SetSpeedState(_movementController.Speed);
     }
 
+    private void OnDied()
+    {
+        _movementController.enabled = false;
+    }
 
     
     

@@ -7,14 +7,14 @@ public class HealthHandler : MonoBehaviour
     public event Action Died;
     public bool IsAlive => _currentHealth > 0;
     
-    [SerializeField]
-    private float _startHealth;
+    [field:SerializeField]
+    public float StartHealth { get; private set; }
 
     private float _currentHealth;
 
     private void Start()
     {
-        _currentHealth = _startHealth;
+        _currentHealth = StartHealth;
     }
 
     public void TakeDamage(float damage)

@@ -19,9 +19,9 @@ public class EffectController : MonoBehaviour
         Destroy(hitEffect.gameObject,_playDuration);
     }
 
-    public void PlayMuzzleEffect(Vector3 position, Vector3 normal)
+    public void PlayMuzzleEffect(Vector3 position, Vector3 direction)
     {
-        var muzzleEffect = Instantiate(_muzzleEffect, position, Quaternion.LookRotation(normal));
+        var muzzleEffect = Instantiate(_muzzleEffect, position, Quaternion.LookRotation(direction));
         muzzleEffect.Play();
         
         Destroy(muzzleEffect.gameObject, _playDuration);

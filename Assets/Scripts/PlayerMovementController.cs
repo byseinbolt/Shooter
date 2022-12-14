@@ -7,19 +7,20 @@ public class PlayerMovementController : MonoBehaviour
     public event Action Moved;
     public event Action Stay;
     public event Action Run;
+
+    public float Speed { get; private set; }
+
+    [SerializeField]
+    private float _walkSpeed;
     
-    public float StaySpeed => 0f;
-    [field: SerializeField]
-    public float WalkSpeed { get;private set;}
-    [field: SerializeField]
-    public float RunSpeed { get; private set;}
+    [SerializeField]
+    private float _runSpeed;
     
     [SerializeField]
     private float _rotationSmoothTime = 0.12f;
     
     private CharacterController _characterController;
 
-    private float _speed;
     private float _rotationVelocity;
     private bool _rotateOnMove;
     
@@ -36,17 +37,19 @@ public class PlayerMovementController : MonoBehaviour
         var shouldMove = moveInput != Vector2.zero;
         if (shouldMove && isRunning)
         {
+            Speed = _runSpeed;
             MoveCharacter(inputDirection, mainCamera);
             Run?.Invoke();
         }
         else if (shouldMove)
         {
+            Speed = _walkSpeed;
            MoveCharacter(inputDirection, mainCamera);
            Moved?.Invoke();
         }
         else
         {
-            _speed = 0f;
+            Speed = 0f;
             Stay?.Invoke();
         }
     }
@@ -55,12 +58,7 @@ public class PlayerMovementController : MonoBehaviour
     {
         _rotateOnMove = isMoving;
     }
-
-    public void SetSpeed(float speed)
-    {
-        _speed = speed;
-    }
-
+    
     private void MoveCharacter(Vector3 inputDirection, Camera mainCamera)
     {
         var targetRotation = Mathf.Atan2(inputDirection.x, inputDirection.z) * Mathf.Rad2Deg
@@ -74,7 +72,7 @@ public class PlayerMovementController : MonoBehaviour
         }
         
         var targetDirection = Quaternion.Euler(0.0f, targetRotation, 0.0f) * Vector3.forward;
-        _characterController.Move(targetDirection.normalized * (_speed * Time.deltaTime));
+        _characterController.Move(targetDirection.normalized * (Speed * Time.deltaTime));
     }
 
    

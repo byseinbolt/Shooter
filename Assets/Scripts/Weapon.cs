@@ -2,9 +2,7 @@
 using UnityEngine;
 
 public class Weapon : MonoBehaviour
-{
-    [field:SerializeField]
-    public float DelayBeforeNextShot { get; private set; }
+{ 
     
     [SerializeField]
     private Bullet _bullet;
@@ -25,12 +23,12 @@ public class Weapon : MonoBehaviour
 
     public void Shoot(RaycastHit targetHit)
     {
+        _effectController.PlayMuzzleEffect(_muzzle.position, _muzzle.forward);
+        
         var aimDirection = (targetHit.point - _muzzle.position).normalized;
         var bullet = Instantiate(_bullet, _muzzle.position, Quaternion.LookRotation(aimDirection, Vector3.up));
          bullet.Initialize(targetHit.point);
          
-        _effectController.PlayMuzzleEffect(_muzzle.position, _muzzle.forward);
-        
         var otherEffectController = targetHit.transform.GetComponentInParent<EffectController>();
         if (otherEffectController != null)
         {
@@ -40,9 +38,16 @@ public class Weapon : MonoBehaviour
         var otherHealthHandler = targetHit.transform.GetComponentInParent<HealthHandler>();
         if (otherHealthHandler != null)
         {
+            if (targetHit.collider.gameObject.CompareTag("UnitHead"))
+            {
+                
+                otherHealthHandler.TakeDamage(otherHealthHandler.StartHealth);
+            }
+        
             otherHealthHandler.TakeDamage(_damage);
         }
     }
+    
 
    
 }
