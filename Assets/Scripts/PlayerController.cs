@@ -35,10 +35,8 @@ public class PlayerController : MonoBehaviour
         _input.Player.Aim.canceled += OnAimCanceled;
         _input.Player.Shoot.performed += _weaponController.OnShoot;
         
-        _movementController.Stay += OnStay;
-        _movementController.Moved += OnMoved;
-        _movementController.Run += OnRun;
         _healthHandler.Died += OnDied;
+        _movementController.SpeedChanged += OnSpeedChanged;
 
     }
 
@@ -50,10 +48,8 @@ public class PlayerController : MonoBehaviour
         _input.Player.Shoot.performed -= _weaponController.OnShoot;
         _input.Player.Disable();
         
-        _movementController.Stay -= OnStay;
-        _movementController.Moved -= OnMoved;
-        _movementController.Run -= OnRun;
         _healthHandler.Died -= OnDied;
+        _movementController.SpeedChanged -= OnSpeedChanged;
     }
 
 
@@ -93,22 +89,12 @@ public class PlayerController : MonoBehaviour
         _cameraController.DisableAimCamera();
         _animationController.SetAimMode(false);
     }
-    
-    private void OnMoved()
-    {
-        _animationController.SetSpeedState(_movementController.Speed);
-    }
 
-    private void OnStay()
+    private void OnSpeedChanged()
     {
         _animationController.SetSpeedState(_movementController.Speed);
     }
     
-    private void OnRun()
-    {
-       _animationController.SetSpeedState(_movementController.Speed);
-    }
-
     private void OnDied()
     {
         _movementController.enabled = false;

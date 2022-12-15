@@ -1,3 +1,4 @@
+using System.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -23,20 +24,23 @@ public class Enemy : MonoBehaviour
     private Transform _target;
     private bool _isDead;
     private Weapon _weapon;
-    private float _walkingSpeed = 2;
-
-    private void Awake()
+    private WaitForSeconds _delayBeforeDropWeapon;
+    private float _walkSpeed = 2;
+    private float _runSpeed = 4;
+    
+    
+    public void Initialize(Transform target)
     {
         _healthHandler = GetComponent<HealthHandler>();
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _animationController = GetComponent<UnitAnimationController>();
-    }
-
-    public void Initialize(Transform target)
-    {
-        TakeWeapon();
+        
+        _delayBeforeDropWeapon = new WaitForSeconds(1);
         _healthHandler.Died += OnDied;
         _target = target;
+        
+        TakeWeapon();
+       
     }
     
     private void OnDestroy()
@@ -51,19 +55,28 @@ public class Enemy : MonoBehaviour
            return;
        }
 
-       if (_navMeshAgent.remainingDistance > _navMeshAgent.stoppingDistance)
-       {
-           _animationController.SetSpeedState(_walkingSpeed);
-           _navMeshAgent.speed = _walkingSpeed;
-       }
-       else
-       {
-           _animationController.SetSpeedState(0);
-           _navMeshAgent.speed = 0;
-       }
-       
+       ChangeWalkMode();
        MoveToShootingRange(_target);
     }
+
+    private void ChangeWalkMode()
+    {
+        if (_navMeshAgent.remainingDistance > _navMeshAgent.stoppingDistance)
+        {
+            _animationController.SetAimMode(false);
+            _navMeshAgent.speed = _runSpeed;
+        }
+        else
+        {
+            _navMeshAgent.speed = 0;
+            _animationController.SetAimMode(true);
+        }
+        
+        _animationController.SetSpeedState(_navMeshAgent.speed);
+       
+    }
+    
+    
 
     private void MoveToShootingRange(Transform target)
     {
@@ -78,7 +91,7 @@ public class Enemy : MonoBehaviour
         _isDead = true;
         _navMeshAgent.enabled = false;
         _animationController.Died();
-        DropWeapon();
+        StartCoroutine(WaitBeforeDropWeapon());
     }
 
     private void TakeWeapon()
@@ -88,8 +101,17 @@ public class Enemy : MonoBehaviour
 
     private void DropWeapon()
     {
-        _weapon.AddComponent<Rigidbody>();
+        var weaponRigidbody = _weapon.AddComponent<Rigidbody>();
+        weaponRigidbody.mass = 15;
+        weaponRigidbody.drag = 3;
+        weaponRigidbody.angularDrag = 3;
         _weapon.transform.SetParent(null, true);
+    }
+
+    private IEnumerator WaitBeforeDropWeapon()
+    {
+        yield return _delayBeforeDropWeapon;
+        DropWeapon();
     }
     
 }

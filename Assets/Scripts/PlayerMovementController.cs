@@ -4,9 +4,7 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerMovementController : MonoBehaviour
 {
-    public event Action Moved;
-    public event Action Stay;
-    public event Action Run;
+    public event Action SpeedChanged;
 
     public float Speed { get; private set; }
 
@@ -35,23 +33,10 @@ public class PlayerMovementController : MonoBehaviour
         var inputDirection = new Vector3(moveInput.x, 0, moveInput.y).normalized;
 
         var shouldMove = moveInput != Vector2.zero;
-        if (shouldMove && isRunning)
-        {
-            Speed = _runSpeed;
-            MoveCharacter(inputDirection, mainCamera);
-            Run?.Invoke();
-        }
-        else if (shouldMove)
-        {
-            Speed = _walkSpeed;
-           MoveCharacter(inputDirection, mainCamera);
-           Moved?.Invoke();
-        }
-        else
-        {
-            Speed = 0f;
-            Stay?.Invoke();
-        }
+        Speed = shouldMove && isRunning ? _runSpeed : shouldMove ? _walkSpeed : 0f;
+
+        SpeedChanged?.Invoke();
+        MoveCharacter(inputDirection,mainCamera);
     }
 
     public void SetRotateOnMove(bool isMoving)

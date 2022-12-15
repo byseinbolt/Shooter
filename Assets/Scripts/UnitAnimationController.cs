@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class UnitAnimationController : MonoBehaviour
 {
@@ -7,7 +8,10 @@ public class UnitAnimationController : MonoBehaviour
     
     private static readonly int IsAiming = Animator.StringToHash("IsAiming");
     private static readonly int Speed = Animator.StringToHash("Speed");
-    
+    private static readonly int Die = Animator.StringToHash("Die");
+    private static readonly int DieTrigger = Animator.StringToHash("DieTrigger");
+
+    private readonly WaitForSeconds _deathAnimationPlayTime = new(3f);
 
     public void SetSpeedState(float speed)
     {
@@ -20,9 +24,14 @@ public class UnitAnimationController : MonoBehaviour
 
     public void Died()
     {
-        _animator.enabled = false;
+        _animator.SetFloat(Die, Random.value);
+        _animator.SetTrigger(DieTrigger);
+        StartCoroutine(WaitTillAnimationPlayed());
     }
 
-   
-
+    private IEnumerator WaitTillAnimationPlayed()
+    {
+        yield return _deathAnimationPlayTime;
+        _animator.enabled = false;
+    }
 }
