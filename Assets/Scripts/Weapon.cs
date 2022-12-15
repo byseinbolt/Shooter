@@ -54,14 +54,14 @@ public class Weapon : MonoBehaviour
         {
             _effectController.PlayMuzzleEffect(_muzzle.position, _muzzle.forward);
             
-            var aimDirection = (new Vector3(target.position.x, 1.5f,target.position.z) - _muzzle.position).normalized;
+            var aimDirection = (target.position - _muzzle.position).normalized;
             var bullet = Instantiate(_bullet, _muzzle.position, Quaternion.LookRotation(aimDirection, Vector3.up));
             bullet.Initialize(target.position);
         
             var otherEffectController = target.gameObject.GetComponent<EffectController>();
             if (otherEffectController != null)
             {
-                otherEffectController.PlayHitEffect(new Vector3(target.position.x, 1.5f,target.position.z), target.position);
+                otherEffectController.PlayHitEffect(target.position, target.position);
             }
 
             var otherHealthHandler = target.gameObject.GetComponent<HealthHandler>();

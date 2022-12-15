@@ -99,6 +99,7 @@ public class PlayerController : MonoBehaviour
     {
         _animationController.Died();
         enabled = false;
+        _input.Player.Disable();
     }
 
     

@@ -24,8 +24,7 @@ public class HealthHandler : MonoBehaviour
             return;
         }
         _currentHealth -= damage;
-        Debug.Log($"{_currentHealth}");
-        
+
         if (_currentHealth<=0)
         {
             Died?.Invoke();
