@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1096497859233230920}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0, y: 0.1005, z: 0.7241}
+  m_LocalPosition: {x: 0, y: 0.1, z: 0.8}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -392,8 +392,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8938890139897016956}
-  m_LocalRotation: {x: 0.54944885, y: -0.44208464, z: -0.46305543, w: -0.5368863}
-  m_LocalPosition: {x: -0.005, y: -0, z: 0.026}
+  m_LocalRotation: {x: 0.519033, y: -0.5308679, z: -0.48956913, w: -0.4572813}
+  m_LocalPosition: {x: -0.013, y: 0.087, z: 0.038}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -405,7 +405,7 @@ Transform:
   - {fileID: 1096497859233230921}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -86.143, y: 71.216, z: 7.004}
+  m_LocalEulerAnglesHint: {x: -96.022, y: 12.492004, z: 80.04}
 --- !u!33 &8966896783333639894
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -484,7 +484,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bullet: {fileID: -1036819270672479660, guid: 39b1eb31ace8bf74eb5cf4b2eac882c3, type: 3}
   _muzzle: {fileID: 1096497859233230921}
-  _damage: 20
+  _damage: 10
 --- !u!114 &9001514481584960692
 MonoBehaviour:
   m_ObjectHideFlags: 0

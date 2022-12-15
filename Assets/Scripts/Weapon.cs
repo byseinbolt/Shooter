@@ -1,9 +1,6 @@
-﻿using System;
-using UnityEngine;
-
+﻿using UnityEngine;
 public class Weapon : MonoBehaviour
-{ 
-    
+{
     [SerializeField]
     private Bullet _bullet;
 
@@ -14,16 +11,18 @@ public class Weapon : MonoBehaviour
     private float _damage;
     
     private EffectController _effectController;
+
+    private float _currentTime;
+    private float _delayBeforeNextShot = 1f;
     
     private void Awake()
     {
         _effectController = GetComponent<EffectController>();
     }
     
-
-    public void Shoot(RaycastHit targetHit)
+    public void PlayerShoot(RaycastHit targetHit)
     {
-        _effectController.PlayMuzzleEffect(_muzzle.position, _muzzle.forward);
+        _effectController.PlayMuzzleEffect(_muzzle.transform.position, _muzzle.forward);
         
         var aimDirection = (targetHit.point - _muzzle.position).normalized;
         var bullet = Instantiate(_bullet, _muzzle.position, Quaternion.LookRotation(aimDirection, Vector3.up));
@@ -40,14 +39,38 @@ public class Weapon : MonoBehaviour
         {
             if (targetHit.collider.gameObject.CompareTag("UnitHead"))
             {
-                
                 otherHealthHandler.TakeDamage(otherHealthHandler.StartHealth);
             }
         
             otherHealthHandler.TakeDamage(_damage);
         }
     }
-    
 
-   
+    public void UnitShoot(Transform target)
+    {
+        _currentTime += Time.deltaTime;
+        
+        if (_currentTime>_delayBeforeNextShot)
+        {
+            _effectController.PlayMuzzleEffect(_muzzle.position, _muzzle.forward);
+            
+            var aimDirection = (new Vector3(target.position.x, 1.5f,target.position.z) - _muzzle.position).normalized;
+            var bullet = Instantiate(_bullet, _muzzle.position, Quaternion.LookRotation(aimDirection, Vector3.up));
+            bullet.Initialize(target.position);
+        
+            var otherEffectController = target.gameObject.GetComponent<EffectController>();
+            if (otherEffectController != null)
+            {
+                otherEffectController.PlayHitEffect(new Vector3(target.position.x, 1.5f,target.position.z), target.position);
+            }
+
+            var otherHealthHandler = target.gameObject.GetComponent<HealthHandler>();
+            if (otherHealthHandler != null)
+            {
+                otherHealthHandler.TakeDamage(_damage);
+            }
+
+            _currentTime = 0;
+        }
+    }
 }

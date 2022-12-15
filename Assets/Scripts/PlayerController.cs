@@ -97,7 +97,8 @@ public class PlayerController : MonoBehaviour
     
     private void OnDied()
     {
-        _movementController.enabled = false;
+        _animationController.Died();
+        enabled = false;
     }
 
     

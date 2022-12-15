@@ -15,6 +15,6 @@ public class PlayerWeaponController : MonoBehaviour
     
     public void OnShoot(InputAction.CallbackContext obj)
     {
-       _weapon.Shoot(_hitTarget);
+       _weapon.PlayerShoot(_hitTarget);
     }
 }

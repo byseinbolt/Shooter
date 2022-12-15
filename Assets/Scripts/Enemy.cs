@@ -22,11 +22,13 @@ public class Enemy : MonoBehaviour
     private UnitAnimationController _animationController;
     
     private Transform _target;
-    private bool _isDead;
     private Weapon _weapon;
     private WaitForSeconds _delayBeforeDropWeapon;
+    private WaitForSeconds _delayBeforeNextShot;
+    
     private float _walkSpeed = 2;
     private float _runSpeed = 4;
+    private bool _isDead;
     
     
     public void Initialize(Transform target)
@@ -36,11 +38,13 @@ public class Enemy : MonoBehaviour
         _animationController = GetComponent<UnitAnimationController>();
         
         _delayBeforeDropWeapon = new WaitForSeconds(1);
+        _delayBeforeNextShot = new WaitForSeconds(2);
+        
+        TakeWeapon();
+        
         _healthHandler.Died += OnDied;
         _target = target;
         
-        TakeWeapon();
-       
     }
     
     private void OnDestroy()
@@ -56,9 +60,11 @@ public class Enemy : MonoBehaviour
        }
 
        ChangeWalkMode();
+       RotateToTarget(_target);
        MoveToShootingRange(_target);
+       
     }
-
+    
     private void ChangeWalkMode()
     {
         if (_navMeshAgent.remainingDistance > _navMeshAgent.stoppingDistance)
@@ -70,12 +76,12 @@ public class Enemy : MonoBehaviour
         {
             _navMeshAgent.speed = 0;
             _animationController.SetAimMode(true);
+            _weapon.UnitShoot(_target);
         }
         
         _animationController.SetSpeedState(_navMeshAgent.speed);
        
     }
-    
     
 
     private void MoveToShootingRange(Transform target)
@@ -86,6 +92,14 @@ public class Enemy : MonoBehaviour
         var destination = transform.position + shootingDistance * shootingDirection;
         _navMeshAgent.destination = destination;
     }
+
+    private void RotateToTarget(Transform target)
+    {
+        var aimTarget = target.position;
+        aimTarget.y = transform.position.y;
+        var aimDirection = (aimTarget - transform.position).normalized;
+        transform.forward = Vector3.Lerp(transform.forward, aimDirection, Time.deltaTime*20f);
+    }
     private void OnDied()
     {
         _isDead = true;
@@ -93,6 +107,8 @@ public class Enemy : MonoBehaviour
         _animationController.Died();
         StartCoroutine(WaitBeforeDropWeapon());
     }
+
+   
 
     private void TakeWeapon()
     {
@@ -113,5 +129,6 @@ public class Enemy : MonoBehaviour
         yield return _delayBeforeDropWeapon;
         DropWeapon();
     }
+    
     
 }
