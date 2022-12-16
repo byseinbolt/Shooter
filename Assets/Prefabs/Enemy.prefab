@@ -1768,7 +1768,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8945b1614ed43b3a13e7db1e0e85976, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shootingRange: 50
+  _shootingRange: 10
   _weaponPrefab: {fileID: 9001514481584960683, guid: b74f21ab545e4a541b4e515e96e4aa60, type: 3}
   _weaponParent: {fileID: 1861966547444642436}
 --- !u!114 &5329127133159914323
