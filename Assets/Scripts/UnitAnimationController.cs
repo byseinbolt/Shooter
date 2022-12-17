@@ -10,12 +10,36 @@ public class UnitAnimationController : MonoBehaviour
     private static readonly int Speed = Animator.StringToHash("Speed");
     private static readonly int Die = Animator.StringToHash("Die");
     private static readonly int DieTrigger = Animator.StringToHash("DieTrigger");
+    private static readonly int MotionSpeed = Animator.StringToHash("MotionSpeed");
+    private static readonly int Jump = Animator.StringToHash("Jump");
+    private static readonly int FreeFall = Animator.StringToHash("FreeFall");
+    private static readonly int Grounded = Animator.StringToHash("Grounded");
 
     private readonly WaitForSeconds _deathAnimationPlayTime = new(3f);
-
+    
     public void SetSpeedState(float speed)
     {
         _animator.SetFloat(Speed, speed);
+    }
+
+    public void SetMotionSpeedState(float motionSpeed)
+    {
+        _animator.SetFloat(MotionSpeed, motionSpeed);
+    }
+
+    public void SetJumpState(bool isJumping)
+    {
+        _animator.SetBool(Jump, isJumping);
+    }
+
+    public void SetFreeFallState(bool isFreeFall)
+    {
+        _animator.SetBool(FreeFall, isFreeFall);
+    }
+
+    public void SetGroundedState(bool isGrounded)
+    {
+        _animator.SetBool(Grounded, isGrounded);
     }
     public void SetAimMode(bool isAiming)
     {

@@ -37,9 +37,11 @@ public class PlayerController : MonoBehaviour
         
         _healthHandler.Died += OnDied;
         _movementController.SpeedChanged += OnSpeedChanged;
+        _movementController.Jump += OnJump;
+        _movementController.FreeFall += OnFreeFall;
+        _movementController.Grounded += OnGrounded;
 
     }
-
     
     private void OnDestroy()
     {
@@ -50,6 +52,9 @@ public class PlayerController : MonoBehaviour
         
         _healthHandler.Died -= OnDied;
         _movementController.SpeedChanged -= OnSpeedChanged;
+        _movementController.Jump -= OnJump;
+        _movementController.FreeFall -= OnFreeFall;
+        _movementController.Grounded -= OnGrounded;
     }
 
 
@@ -57,6 +62,8 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         _weaponController.Initialize(_cameraController.GetRaycastTarget(_camera));
+        _movementController.JumpAndGravity(_input.Player.Jump.WasPerformedThisFrame());
+        _movementController.GroundCheck();
         
         var moveInput = _input.Player.Move.ReadValue<Vector2>();
         _movementController.Move(moveInput, _input.Player.Sprint.IsPressed(), _camera);
@@ -92,7 +99,23 @@ public class PlayerController : MonoBehaviour
 
     private void OnSpeedChanged()
     {
-        _animationController.SetSpeedState(_movementController.Speed);
+        _animationController.SetSpeedState(_movementController.AnimationBlend);
+        _animationController.SetMotionSpeedState(_movementController.Magnitude);
+    }
+    
+    private void OnGrounded(bool isGrounded)
+    {
+        _animationController.SetGroundedState(isGrounded);
+    }
+
+    private void OnFreeFall(bool isFreeFall)
+    {
+        _animationController.SetFreeFallState(isFreeFall);
+    }
+
+    private void OnJump(bool isJumping)
+    {
+       _animationController.SetJumpState(isJumping);
     }
     
     private void OnDied()
