@@ -62,7 +62,7 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         _weaponController.Initialize(_cameraController.GetRaycastTarget(_camera));
-        _movementController.JumpAndGravity(_input.Player.Jump.WasPerformedThisFrame());
+        _movementController.JumpAndGravity(_input.Player.Jump.WasPressedThisFrame());
         _movementController.GroundCheck();
         
         var moveInput = _input.Player.Move.ReadValue<Vector2>();

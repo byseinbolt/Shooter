@@ -182,7 +182,7 @@ public class PlayerMovementController : MonoBehaviour
         
         var targetDirection = Quaternion.Euler(0.0f, targetRotation, 0.0f) * Vector3.forward;
         _characterController.Move(targetDirection.normalized * (_speed * Time.deltaTime) +
-                                  new Vector3(0, _verticalVelocity, 0));
+                                  new Vector3(0, _verticalVelocity, 0) * Time.deltaTime);
     }
 
    

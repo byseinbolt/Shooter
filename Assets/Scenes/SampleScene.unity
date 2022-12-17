@@ -605,7 +605,7 @@ MonoBehaviour:
   _enemyPrefab: {fileID: 5329127133159914318, guid: d8b332d933a83f44ea6da805a009d109, type: 3}
   _spawnPoint: {fileID: 300750703}
   _radius: 20
-  _enemiesCount: 0
+  _enemiesCount: 5
 --- !u!1001 &157404142
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9727,7 +9727,7 @@ MonoBehaviour:
   _groundedRadius: 0.28
   _groundLayers:
     serializedVersion: 2
-    m_Bits: 129
+    m_Bits: 128
 --- !u!143 &7609848036691876372
 CharacterController:
   m_ObjectHideFlags: 0
@@ -9745,7 +9745,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0.9, z: 0}
+  m_Center: {x: -0.1, y: 0.9, z: -0.1}
 --- !u!114 &7609848036691876373
 MonoBehaviour:
   m_ObjectHideFlags: 0
