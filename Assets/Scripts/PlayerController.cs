@@ -56,9 +56,7 @@ public class PlayerController : MonoBehaviour
         _movementController.FreeFall -= OnFreeFall;
         _movementController.Grounded -= OnGrounded;
     }
-
-
-
+    
     private void Update()
     {
         _weaponController.Initialize(_cameraController.GetRaycastTarget(_camera));
@@ -124,7 +122,4 @@ public class PlayerController : MonoBehaviour
         enabled = false;
         _input.Player.Disable();
     }
-
-    
-    
 }

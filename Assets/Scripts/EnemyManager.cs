@@ -14,7 +14,6 @@ public class EnemyManager : MonoBehaviour
     [SerializeField]
     private int _enemiesCount = 3;
     
-
     public void Initialize(Transform enemiesTarget)
     {
         for (int i = 0; i < _enemiesCount; i++)
@@ -26,6 +25,4 @@ public class EnemyManager : MonoBehaviour
             enemy.Initialize(enemiesTarget);
         }
     }
-    
-
 }

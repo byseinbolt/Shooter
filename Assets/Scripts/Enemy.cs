@@ -24,27 +24,20 @@ public class Enemy : MonoBehaviour
     private Transform _target;
     private Weapon _weapon;
     private WaitForSeconds _delayBeforeDropWeapon;
-    private WaitForSeconds _delayBeforeNextShot;
-    
+
     private float _walkSpeed = 2;
     private float _runSpeed = 4;
     private bool _isDead;
-    
     
     public void Initialize(Transform target)
     {
         _healthHandler = GetComponent<HealthHandler>();
         _navMeshAgent = GetComponent<NavMeshAgent>();
         _animationController = GetComponent<UnitAnimationController>();
-        
         _delayBeforeDropWeapon = new WaitForSeconds(1);
-        _delayBeforeNextShot = new WaitForSeconds(2);
-        
-        TakeWeapon();
-        
-        _healthHandler.Died += OnDied;
         _target = target;
-        
+        TakeWeapon();
+        _healthHandler.Died += OnDied;
     }
     
     private void OnDestroy()
@@ -83,7 +76,6 @@ public class Enemy : MonoBehaviour
        
     }
     
-
     private void MoveToShootingRange(Transform target)
     {
         var distanceToTarget = Vector3.Distance(transform.position, target.position);
@@ -107,9 +99,7 @@ public class Enemy : MonoBehaviour
         _animationController.Died();
         StartCoroutine(WaitBeforeDropWeapon());
     }
-
-   
-
+    
     private void TakeWeapon()
     {
         _weapon = Instantiate(_weaponPrefab, _weaponParent);
@@ -129,6 +119,4 @@ public class Enemy : MonoBehaviour
         yield return _delayBeforeDropWeapon;
         DropWeapon();
     }
-    
-    
 }

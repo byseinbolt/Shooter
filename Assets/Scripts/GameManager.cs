@@ -7,9 +7,10 @@ public class GameManager : MonoBehaviour
 
     [SerializeField]
     private PlayerController _player;
-
-
-    [SerializeField] private bool _shouldLockCursor;
+    
+    [SerializeField]
+    private bool _shouldLockCursor;
+    
     private void Awake()
     {
         _enemyManager.Initialize(_player.transform);

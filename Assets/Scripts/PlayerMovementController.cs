@@ -61,7 +61,6 @@ public class PlayerMovementController : MonoBehaviour
     
     private float _jumpTimeoutDelta;
     private float _fallTimeoutDelta;
-   
     
     private void Awake()
     {
@@ -89,6 +88,7 @@ public class PlayerMovementController : MonoBehaviour
          MoveCharacter(inputDirection,mainCamera);
          
     }
+    
     public void SetRotateOnMove(bool isMoving)
     {
         _rotateOnMove = isMoving;
