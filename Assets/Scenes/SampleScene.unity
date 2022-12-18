@@ -9700,7 +9700,7 @@ MonoBehaviour:
   _mouseSensitivity: 0.05
   _layerMask:
     serializedVersion: 2
-    m_Bits: 129
+    m_Bits: 503
   _aimRig: {fileID: 1485946519}
 --- !u!114 &7609848036691876371
 MonoBehaviour:
@@ -9727,7 +9727,7 @@ MonoBehaviour:
   _groundedRadius: 0.28
   _groundLayers:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 384
 --- !u!143 &7609848036691876372
 CharacterController:
   m_ObjectHideFlags: 0
@@ -9741,7 +9741,7 @@ CharacterController:
   serializedVersion: 2
   m_Height: 1.8
   m_Radius: 0.3
-  m_SlopeLimit: 45
+  m_SlopeLimit: 80
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
